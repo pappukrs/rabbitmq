@@ -1,8 +1,11 @@
 // fanout-consumer.js
 const amqp = require('amqplib');
 
+
+
 async function receiveFromFanout(consumerName) {
   try {
+
     // 1. Connect to RabbitMQ
     const connection = await amqp.connect('amqp://localhost');
     const channel = await connection.createChannel();
@@ -14,8 +17,8 @@ async function receiveFromFanout(consumerName) {
     });
 
     // 3. Create an exclusive queue (auto-deleted when consumer disconnects)
-    const q = await channel.assertQueue('', {
-      exclusive: true
+    const q = await channel.assertQueue('logs-msg', {
+     durable: true
     });
 
     console.log(`[*] ${consumerName} waiting for messages...`);
